@@ -1,6 +1,12 @@
 # FaceBlur
 Detects faces into pictures using the Azure Cognitive Services Face API and blurs them to anonymize the information.
 
+**Original Picture**             |  **Final Result**
+:-------------------------:|:-------------------------:
+![](./temp/test.png)  |  ![](./blurred_img/blurred_img.jpg)
+
+
+
 ## Step 1: Create the Azure Cognitive Service API
 Navigate to the [Azure Portal](portal.azure.com) and login in to your subscription. If you don't have one, you can create your **Azure free account** [here](https://azure.microsoft.com/en-us/free/). 
 
