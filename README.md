@@ -26,16 +26,16 @@ On the left side menu, navigate to *Keys and Endpoints* and click on the button 
 
 ![Face API Overview](./readme_imgs/FaceAPIKeys.png)
 
-## Step 3: run your notebook
+## Step 3: Run your notebook
 You can simply start the notebook locally or on **Azure Machine Learning Service**.
 
-Few recommendation:
+Few recommendations:
 * You might need to download the packages imported in the first cell
 * You need to insert the *image url*
 
 ## TODOs:
 * Finish implementation of the notebook so that it takes and sends to the API a local image;
-* Implement a complete Azure archtecture using Azure Python Functions and Azure Storage account.
+* Implement a complete Azure architecture using Azure Python Functions and Azure Storage account.
 
 ## Resources
 * [**Face API**](https://azure.microsoft.com/en-us/services/cognitive-services/face/#get-started)
