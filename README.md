@@ -5,7 +5,7 @@ Detects faces into pictures using the Azure Cognitive Services Face API and blur
 :-------------------------:|:-------------------------:
 ![](./temp/test.png)  |  ![](./blurred_img/blurred_img.jpg)
 
-
+In the [test_imgs](./test_imgs/) folder there are some test images downloaded from [unsplash](https://unsplash.com/) that can be use to quickly run the notebook. 
 
 ## Step 1: Create the Azure Cognitive Service API
 Navigate to the [Azure Portal](portal.azure.com) and login in to your subscription. If you don't have one, you can create your **Azure free account** [here](https://azure.microsoft.com/en-us/free/). 
@@ -17,7 +17,7 @@ Once you have your Azure subscription, create a [**Face API resource**](https://
 Toggle the checkbox and click on **Review and Create** to proceed to the last step: click the **Create** button. When the resource has been deployed, click on **Go to resource** or navigate to the Resource Group where you deployed it. 
 
 ## Step 2: Gather information on the service and fill up config file
-To make the notebook work correctly, you'll need to put some information into the [**confing.json**](https://github.com/guendas/FaceBlur/blob/master/config.json) file. Open the file.
+To make the notebook work correctly, you'll need to put some information into the [**config.json**](https://github.com/guendas/FaceBlur/blob/master/config.json) file. Open the file.
 
 On your resource on Azure left menu, navigate to the *Overview* tab. Copy-paste the values listed below as values in the config file:
 
@@ -35,9 +35,9 @@ On the left side menu, navigate to *Keys and Endpoints* and click on the button 
 ## Step 3: Run your notebook
 You can simply start the notebook locally or on **Azure Machine Learning Service**.
 
-Few recommendations:
+**Few recommendations**:
 * You might need to download the packages imported in the first cell
-* You need to insert the *image url*
+* You need to insert the *image url*. There are test images available [here](./test_imgs/)
 
 ## TODOs:
 * Finish implementation of the notebook so that it takes and sends to the API a local image;
