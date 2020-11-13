@@ -24,7 +24,6 @@ namespace FaceBlurAPI
 {
     static class Helper
     {
-        const string RECOGNITION_MODEL3 = RecognitionModel.Recognition03;
         static string STORAGE_CONNECTIONSTRING = null;
         static string SUBSCRIPTION_KEY = null;
         static string ENDPOINT = null;
@@ -135,7 +134,7 @@ namespace FaceBlurAPI
 
             Graphics g = Graphics.FromImage(bmpImageToBlur);
             g.CompositingMode = CompositingMode.SourceCopy;
-            g.DrawImage(bmpImageBlurredROI, new Point(origin.Y, origin.X));
+            g.DrawImage(bmpImageBlurredROI, new Rectangle(origin.Y, origin.X, width, height));
 
             log.LogInformation("======== FACE BLURRED ========");
 
@@ -157,7 +156,7 @@ namespace FaceBlurAPI
             IList<DetectedFace> detectedFaces;
 
             // Detect faces with all attributes from image url.
-            detectedFaces = await client.Face.DetectWithUrlAsync($"{imageToBlurUrl}", recognitionModel: recognitionModel);
+            detectedFaces = await client.Face.DetectWithUrlAsync($"{imageToBlurUrl}", detectionModel: DetectionModel.Detection02);
 
             log.LogInformation($"{detectedFaces.Count} FACE(S) DETECTED FROM IMAGE `{imageToBlurUrl}`.");
 
