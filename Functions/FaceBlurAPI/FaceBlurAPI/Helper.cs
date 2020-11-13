@@ -59,7 +59,7 @@ namespace FaceBlurAPI
         }
 
         /// <summary>
-        /// This method check if the parameters to run the functions are provided, if every is ok, you get an empty string.
+        /// This method checks if the parameters to run the functions are provided, if every is ok, you get an empty string.
         /// </summary>
         /// <returns></returns>
         private static string CheckParameters()
@@ -88,7 +88,7 @@ namespace FaceBlurAPI
         }
 
         /// <summary>
-        /// This methos create a Face API client using endpoint and key provided.
+        /// This method creates a Face API client using endpoint and key provided.
         /// </summary>
         /// <param name="endpoint"></param>
         /// <param name="key"></param>
@@ -143,7 +143,7 @@ namespace FaceBlurAPI
         }
 
         /// <summary>
-        /// This method call the Face API from a url and estract the "faces" and coordinates
+        /// This method calls the Face API from a url and estract the "faces" and coordinates
         /// </summary>
         /// <param name="log"></param>
         /// <param name="client"></param>
@@ -187,7 +187,7 @@ namespace FaceBlurAPI
         }
 
         /// <summary>
-        /// This method upload an image to a storage account, provided as parameter.
+        /// This method uploads an image to a storage account, provided as parameter.
         /// </summary>
         /// <param name="log"></param>
         /// <param name="bitmap"></param>
