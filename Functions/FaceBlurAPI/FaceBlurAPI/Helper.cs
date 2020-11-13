@@ -65,23 +65,23 @@ namespace FaceBlurAPI
         private static string CheckParameters()
         {
             var result = "";
-            if (STORAGE_CONNECTIONSTRING == string.Empty) {
-                result = "You need to provide a connection string to a storage account to save you blurred image.\n";
+            if (STORAGE_CONNECTIONSTRING == string.Empty || STORAGE_CONNECTIONSTRING ==  null) {
+                result = "You need to provide a connection string to a storage account to save you blurred image.";
             }
-            else if (SUBSCRIPTION_KEY == string.Empty) {
-                result += "You need to provide a subscription key to Azure Cognittive Service Face API.\n";
+            if (SUBSCRIPTION_KEY == string.Empty || SUBSCRIPTION_KEY == null) {
+                result += "You need to provide a subscription key to Azure Cognittive Service Face API.";
             }
-            else if (ENDPOINT == string.Empty)
+            if (ENDPOINT == string.Empty || ENDPOINT == null)
             {
-                result += "You need to provide an endpoint to Azure Cognittive Service Face API.\n";
+                result += "You need to provide an endpoint to Azure Cognittive Service Face API.";
             }
-            else if (CONTAINER_NAME_LOWER_CASE == string.Empty)
+            if (CONTAINER_NAME_LOWER_CASE == string.Empty || CONTAINER_NAME_LOWER_CASE == null)
             {
-                result += "You need to provide a name for a container that will be created to store your blurred images.\n";
+                result += "You need to provide a name for a container that will be created to store your blurred images.";
             }
-            else if (SAS_TOKEN_MINUTES_VALIDITY <= 0)
+            if (SAS_TOKEN_MINUTES_VALIDITY <= 0 )
             {
-                result += "You need to provide a time in minutes for which the resulting url will be valid for you access directly.\n";
+                result += "You need to provide a time in minutes for which the resulting url will be valid for you to access directly.";
             }
 
             return result;
