@@ -31,7 +31,7 @@ namespace FaceBlurAPI
         static string CONTAINER_NAME_LOWER_CASE = null;
         static int SAS_TOKEN_MINUTES_VALIDITY = 30;
 
-        public static async Task<string> Main(ILogger log, string validatedUrl)
+        public static async Task<(string, string)> Main(ILogger log, string validatedUrl)
         {
             STORAGE_CONNECTIONSTRING = GetEnvironmentVariable("STORAGE_CONNECTIONSTRING");
             SUBSCRIPTION_KEY = GetEnvironmentVariable("SUBSCRIPTION_KEY");
@@ -39,15 +39,50 @@ namespace FaceBlurAPI
             CONTAINER_NAME_LOWER_CASE = GetEnvironmentVariable("CONTAINER_NAME_LOWER_CASE").ToLower();
             Int32.TryParse(GetEnvironmentVariable("SAS_TOKEN_MINUTES_VALIDITY"), out SAS_TOKEN_MINUTES_VALIDITY);
 
-            log.LogDebug("STORAGE_CONNECTIONSTRING:" + GetEnvironmentVariable("STORAGE_CONNECTIONSTRING"));
-            log.LogDebug("SUBSCRIPTION_KEY:" + GetEnvironmentVariable("SUBSCRIPTION_KEY"));
-            log.LogDebug("ENDPOINT:" + GetEnvironmentVariable("ENDPOINT"));
+            string checkParams = CheckParameters();
 
-            IFaceClient client = Authenticate(ENDPOINT, SUBSCRIPTION_KEY);
-            log.LogInformation("CLIENT AUTHENTICATED.");
+            if (checkParams == String.Empty)
+            {
 
-            string blurredImageUrlSASToken =  await DetectFaceExtract(log, client, validatedUrl, RECOGNITION_MODEL3);
-            return blurredImageUrlSASToken;
+                log.LogDebug("STORAGE_CONNECTIONSTRING:" + GetEnvironmentVariable("STORAGE_CONNECTIONSTRING"));
+                log.LogDebug("SUBSCRIPTION_KEY:" + GetEnvironmentVariable("SUBSCRIPTION_KEY"));
+                log.LogDebug("ENDPOINT:" + GetEnvironmentVariable("ENDPOINT"));
+
+                IFaceClient client = Authenticate(ENDPOINT, SUBSCRIPTION_KEY);
+                log.LogInformation("CLIENT AUTHENTICATED.");
+
+                string blurredImageUrlSASToken = await DetectFaceExtract(log, client, validatedUrl, RECOGNITION_MODEL3);
+                return (blurredImageUrlSASToken, "OK");
+
+            }
+            else { 
+                return ("",checkParams);
+            }
+        }
+
+        private static string CheckParameters()
+        {
+            var result = "";
+            if (STORAGE_CONNECTIONSTRING == string.Empty) {
+                result = "You need to provide a connection string to a storage account to save you blurred image.\n";
+            }
+            else if (SUBSCRIPTION_KEY == string.Empty) {
+                result += "You need to provide a subscription key to Azure Cognittive Service Face API.\n";
+            }
+            else if (ENDPOINT == string.Empty)
+            {
+                result += "You need to provide an endpoint to Azure Cognittive Service Face API.\n";
+            }
+            else if (CONTAINER_NAME_LOWER_CASE == string.Empty)
+            {
+                result += "You need to provide a name for a container that will be created to store your blurred images.\n";
+            }
+            else if (SAS_TOKEN_MINUTES_VALIDITY <= 0)
+            {
+                result += "You need to provide a time in minutes for which the resulting url will be valid for you access directly.\n";
+            }
+
+            return result;
         }
 
         private static IFaceClient Authenticate(string endpoint, string key)

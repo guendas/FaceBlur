@@ -8,5 +8,6 @@ namespace FaceBlurAPI.Model
     {
         public string UrlOriginalImg;
         public string UrlBlurredSASImg;
+        public string ResMsg;
     }
 }

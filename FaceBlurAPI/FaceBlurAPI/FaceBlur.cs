@@ -28,7 +28,7 @@ namespace FaceBlurAPI
             if (isValidUrl)
             {
                 var urlImageBlurredSAS = await Helper.Main(log, url);
-                responseMessage = new ReturnUrls() { UrlOriginalImg = url, UrlBlurredSASImg = urlImageBlurredSAS };
+                responseMessage = new ReturnUrls() { UrlOriginalImg = url, UrlBlurredSASImg = urlImageBlurredSAS.Item1, ResMsg = urlImageBlurredSAS.Item2};
 
             }
             else 
