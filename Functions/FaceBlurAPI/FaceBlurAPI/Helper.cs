@@ -50,7 +50,8 @@ namespace FaceBlurAPI
                 log.LogInformation("CLIENT AUTHENTICATED.");
 
                 string blurredImageUrlSASToken = await DetectFaceExtract(log, client, validatedUrl);
-                return (blurredImageUrlSASToken, "OK");
+                var result = blurredImageUrlSASToken == string.Empty ? ("", "No face Found!") : (blurredImageUrlSASToken, "OK");
+                return result;
             }
             else { 
                 return ("",checkParams);
@@ -158,31 +159,41 @@ namespace FaceBlurAPI
             // Detect faces with all attributes from image url.
             detectedFaces = await client.Face.DetectWithUrlAsync($"{imageToBlurUrl}", detectionModel: DetectionModel.Detection02);
 
-            log.LogInformation($"{detectedFaces.Count} FACE(S) DETECTED FROM IMAGE `{imageToBlurUrl}`.");
-
-            // I need to read the imaged to blur as byte array, to work in memory.
-            byte[] byteData = GetImageAsByteArray(imageToBlurUrl);
-
-            Bitmap bmp = null;
-            using (MemoryStream ms = new MemoryStream(byteData)) {
-                bmp = (Bitmap)Image.FromStream(ms);
-            }
-
-            foreach (var face in detectedFaces)
+            if (detectedFaces.Count > 0)
             {
-                Bitmap bmpImageBlurred = BlurImage(log, bmp, new Point(face.FaceRectangle.Top, face.FaceRectangle.Left), face.FaceRectangle.Width, face.FaceRectangle.Height);
-                bmp = bmpImageBlurred;
+                log.LogInformation($"{detectedFaces.Count} FACE(S) DETECTED FROM IMAGE `{imageToBlurUrl}`.");
+
+                // I need to read the imaged to blur as byte array, to work in memory.
+                byte[] byteData = GetImageAsByteArray(imageToBlurUrl);
+
+                Bitmap bmp = null;
+                using (MemoryStream ms = new MemoryStream(byteData))
+                {
+                    bmp = (Bitmap)Image.FromStream(ms);
+                }
+
+                foreach (var face in detectedFaces)
+                {
+                    Bitmap bmpImageBlurred = BlurImage(log, bmp, new Point(face.FaceRectangle.Top, face.FaceRectangle.Left), face.FaceRectangle.Width, face.FaceRectangle.Height);
+                    bmp = bmpImageBlurred;
+                }
+
+                // Every run I get a new time based url for image
+                string imagename = imageToBlurUrl.Split('/').Last();
+                string ImageFullDirectoryname = DateTime.UtcNow.ToString().Replace(' ', '/').Replace(':', '/') + "/blurred/" + imagename;
+
+                var ImageBlurredUrlSAS = await SendAsBlob(log, bmp, ImageFullDirectoryname, CONTAINER_NAME_LOWER_CASE, STORAGE_CONNECTIONSTRING);
+
+                log.LogInformation("======== DETECT FACES END ========");
+
+                return ImageBlurredUrlSAS;
+
             }
+            else {
+                log.LogInformation("======== DETECT FACES (NO) END ========");
 
-            // Every run I get a new time based url for image
-            string imagename = imageToBlurUrl.Split('/').Last();
-            string ImageFullDirectoryname = DateTime.UtcNow.ToString().Replace(' ', '/').Replace(':', '/') + "/blurred/" + imagename;
-            
-            var ImageBlurredUrlSAS = await SendAsBlob(log, bmp, ImageFullDirectoryname, CONTAINER_NAME_LOWER_CASE, STORAGE_CONNECTIONSTRING);
-
-            log.LogInformation("======== DETECT FACES END ========");
-
-            return ImageBlurredUrlSAS;
+                return string.Empty;
+            }
         }
 
         /// <summary>
