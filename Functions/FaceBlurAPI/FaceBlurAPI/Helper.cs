@@ -49,7 +49,7 @@ namespace FaceBlurAPI
                 IFaceClient client = Authenticate(ENDPOINT, SUBSCRIPTION_KEY);
                 log.LogInformation("CLIENT AUTHENTICATED.");
 
-                string blurredImageUrlSASToken = await DetectFaceExtract(log, client, validatedUrl, RECOGNITION_MODEL3);
+                string blurredImageUrlSASToken = await DetectFaceExtract(log, client, validatedUrl);
                 return (blurredImageUrlSASToken, "OK");
             }
             else { 
@@ -149,7 +149,7 @@ namespace FaceBlurAPI
         /// <param name="imageToBlurUrl"></param>
         /// <param name="recognitionModel"></param>
         /// <returns></returns>
-        public static async Task<string> DetectFaceExtract(ILogger log, IFaceClient client, string imageToBlurUrl, string recognitionModel)
+        public static async Task<string> DetectFaceExtract(ILogger log, IFaceClient client, string imageToBlurUrl)
         {
             log.LogInformation("======== DETECT FACES START ========");
 
