@@ -43,7 +43,6 @@ namespace FaceBlurAPI
 
             if (checkParams == String.Empty)
             {
-
                 log.LogDebug("STORAGE_CONNECTIONSTRING:" + GetEnvironmentVariable("STORAGE_CONNECTIONSTRING"));
                 log.LogDebug("SUBSCRIPTION_KEY:" + GetEnvironmentVariable("SUBSCRIPTION_KEY"));
                 log.LogDebug("ENDPOINT:" + GetEnvironmentVariable("ENDPOINT"));
@@ -53,13 +52,16 @@ namespace FaceBlurAPI
 
                 string blurredImageUrlSASToken = await DetectFaceExtract(log, client, validatedUrl, RECOGNITION_MODEL3);
                 return (blurredImageUrlSASToken, "OK");
-
             }
             else { 
                 return ("",checkParams);
             }
         }
 
+        /// <summary>
+        /// This method check if the parameters to run the functions are provided, if every is ok, you get an empty string.
+        /// </summary>
+        /// <returns></returns>
         private static string CheckParameters()
         {
             var result = "";
@@ -85,21 +87,41 @@ namespace FaceBlurAPI
             return result;
         }
 
+        /// <summary>
+        /// This methos create a Face API client using endpoint and key provided.
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         private static IFaceClient Authenticate(string endpoint, string key)
         {
             return new FaceClient(new ApiKeyServiceClientCredentials(key)) { Endpoint = endpoint };
         }
 
-        private static byte[] GetImageAsByteArray(string imageFilePath)
+        /// <summary>
+        /// Method to get an array of byte from a remote url. It performs a web call.
+        /// </summary>
+        /// <param name="imageFilePath"></param>
+        /// <returns></returns>
+        private static byte[] GetImageAsByteArray(string ImageUrl)
         {
             byte[] imageBytes = null;
             using (var webClient = new WebClient())
             {
-                imageBytes = webClient.DownloadData(imageFilePath);
+                imageBytes = webClient.DownloadData(ImageUrl);
             }
             return imageBytes;
         }
 
+        /// <summary>
+        /// This method uses opencv to blur an Image, return a standard .NET Bitmap
+        /// </summary>
+        /// <param name="log"></param>
+        /// <param name="bmpImageToBlur"></param>
+        /// <param name="origin"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
         private static Bitmap BlurImage(ILogger log, Bitmap bmpImageToBlur, Point origin, int width, int height)
         {
             Image<Bgr, Byte> cvImageToBlur = bmpImageToBlur.ToImage<Bgr, byte>();
@@ -120,6 +142,14 @@ namespace FaceBlurAPI
             return bmpImageToBlur;
         }
 
+        /// <summary>
+        /// This method call the Face API from a url and estract the "faces" and coordinates
+        /// </summary>
+        /// <param name="log"></param>
+        /// <param name="client"></param>
+        /// <param name="imageToBlurUrl"></param>
+        /// <param name="recognitionModel"></param>
+        /// <returns></returns>
         public static async Task<string> DetectFaceExtract(ILogger log, IFaceClient client, string imageToBlurUrl, string recognitionModel)
         {
             log.LogInformation("======== DETECT FACES START ========");
@@ -156,6 +186,15 @@ namespace FaceBlurAPI
             return ImageBlurredUrlSAS;
         }
 
+        /// <summary>
+        /// This method upload an image to a storage account, provided as parameter.
+        /// </summary>
+        /// <param name="log"></param>
+        /// <param name="bitmap"></param>
+        /// <param name="fileName"></param>
+        /// <param name="containerReference"></param>
+        /// <param name="connectionString"></param>
+        /// <returns></returns>
         private static async Task<string> SendAsBlob(ILogger log, Bitmap bitmap, string fileName, string containerReference, string connectionString)
         {
             using (var memoryStream = new MemoryStream())
@@ -183,14 +222,26 @@ namespace FaceBlurAPI
             }
         }
 
+        /// <summary>
+        /// Method used to access the parameters that are environment variables.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         private static string GetEnvironmentVariable(string name)
         {
             return System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
         }
 
+        /// <summary>
+        /// Method used to create the SAS token used to the url of the blurred imaged. That url remain accessibile only for the time provided as parameter.
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="blobName"></param>
+        /// <param name="key"></param>
+        /// <param name="storedPolicyName"></param>
+        /// <returns></returns>
         private static string GetBlobSasUri(CloudBlobContainer container, string blobName, StorageSharedKeyCredential key, string storedPolicyName = null)
         {
-            // Create a SAS token that's valid for 30 min hour.
             BlobSasBuilder sasBuilder = new BlobSasBuilder()
             {
                 BlobContainerName = container.Name,
@@ -209,7 +260,6 @@ namespace FaceBlurAPI
                 sasBuilder.Identifier = storedPolicyName;
             }
 
-            // Use the key to get the SAS token.
             string sasToken = sasBuilder.ToSasQueryParameters(key).ToString();
 
             var r = container.StorageUri.PrimaryUri;
