@@ -25,10 +25,10 @@ namespace FaceBlurAPI
 {
     static class Helper
     {
-        static string STORAGE_CONNECTIONSTRING = null;
-        static string SUBSCRIPTION_KEY = null;
-        static string ENDPOINT = null;
-        static string CONTAINER_NAME_LOWER_CASE = null;
+        static string STORAGE_CONNECTIONSTRING = string.Empty;
+        static string SUBSCRIPTION_KEY = string.Empty;
+        static string ENDPOINT = string.Empty;
+        static string CONTAINER_NAME_LOWER_CASE = string.Empty;
         static int SAS_TOKEN_MINUTES_VALIDITY = 30;
 
         public static async Task<(string, string)> Main(ILogger log, string validatedUrl)
@@ -51,9 +51,6 @@ namespace FaceBlurAPI
 
             log.LogInformation(" ---- CHECKING PARAMS ----");
             string checkParams = CheckParameters();
-
-            // this is a valid string at this point :-)
-            CONTAINER_NAME_LOWER_CASE = CONTAINER_NAME_LOWER_CASE.ToLower();
 
             if (checkParams == String.Empty)
             {
@@ -223,6 +220,8 @@ namespace FaceBlurAPI
         /// <returns></returns>
         private static async Task<string> SendAsBlob(ILogger log, Bitmap bitmap, string fileName, string containerReference, string connectionString)
         {
+            log.LogInformation(" ---- UPLOAD BLURRED IMAGE TO BLOB ----");
+
             using (var memoryStream = new MemoryStream())
             {
                 // Fill stream with image in JPG format
