@@ -11,6 +11,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -32,28 +33,43 @@ namespace FaceBlurAPI
 
         public static async Task<(string, string)> Main(ILogger log, string validatedUrl)
         {
-            STORAGE_CONNECTIONSTRING = GetEnvironmentVariable("STORAGE_CONNECTIONSTRING");
-            SUBSCRIPTION_KEY = GetEnvironmentVariable("SUBSCRIPTION_KEY");
-            ENDPOINT = GetEnvironmentVariable("ENDPOINT");
-            CONTAINER_NAME_LOWER_CASE = GetEnvironmentVariable("CONTAINER_NAME_LOWER_CASE").ToLower();
-            Int32.TryParse(GetEnvironmentVariable("SAS_TOKEN_MINUTES_VALIDITY"), out SAS_TOKEN_MINUTES_VALIDITY);
+            log.LogInformation(" ---- MAIN START ----");
+            log.LogInformation(" ---- READING PARAMS ----");
 
+            STORAGE_CONNECTIONSTRING = GetEnvironmentVariable(log, "STORAGE_CONNECTIONSTRING");
+            SUBSCRIPTION_KEY = GetEnvironmentVariable(log, "SUBSCRIPTION_KEY");
+            ENDPOINT = GetEnvironmentVariable(log, "ENDPOINT");
+            CONTAINER_NAME_LOWER_CASE = GetEnvironmentVariable(log, "CONTAINER_NAME_LOWER_CASE");
+            try
+            {
+                Int32.TryParse(GetEnvironmentVariable(log, "SAS_TOKEN_MINUTES_VALIDITY"), out SAS_TOKEN_MINUTES_VALIDITY);
+            }
+            catch (Exception)
+            {
+                SAS_TOKEN_MINUTES_VALIDITY = 0;
+            }
+
+            log.LogInformation(" ---- CHECKING PARAMS ----");
             string checkParams = CheckParameters();
+
+            // this is a valid string at this point :-)
+            CONTAINER_NAME_LOWER_CASE = CONTAINER_NAME_LOWER_CASE.ToLower();
 
             if (checkParams == String.Empty)
             {
-                log.LogDebug("STORAGE_CONNECTIONSTRING:" + GetEnvironmentVariable("STORAGE_CONNECTIONSTRING"));
-                log.LogDebug("SUBSCRIPTION_KEY:" + GetEnvironmentVariable("SUBSCRIPTION_KEY"));
-                log.LogDebug("ENDPOINT:" + GetEnvironmentVariable("ENDPOINT"));
-
                 IFaceClient client = Authenticate(ENDPOINT, SUBSCRIPTION_KEY);
                 log.LogInformation("CLIENT AUTHENTICATED.");
 
                 string blurredImageUrlSASToken = await DetectFaceExtract(log, client, validatedUrl);
                 var result = blurredImageUrlSASToken == string.Empty ? ("", "No face Found!") : (blurredImageUrlSASToken, "OK");
+                
+                log.LogInformation(" ---- MAIN OK PARAMS END ----");
+
                 return result;
             }
-            else { 
+            else {
+                log.LogInformation(" ---- MAIN NO PARAMS END ----");
+
                 return ("",checkParams);
             }
         }
@@ -237,9 +253,20 @@ namespace FaceBlurAPI
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        private static string GetEnvironmentVariable(string name)
+        private static string GetEnvironmentVariable(ILogger log, string name)
         {
-            return System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
+            log.LogInformation($"---- READING {name} ----");
+            var result = string.Empty;
+            try
+            {
+                result = System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Process);
+            }
+            catch (Exception e)
+            {
+                log.LogError(e.Message);
+                result = "";
+            }
+            return result;
         }
 
         /// <summary>

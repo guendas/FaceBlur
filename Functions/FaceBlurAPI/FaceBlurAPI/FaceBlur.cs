@@ -18,22 +18,34 @@ namespace FaceBlurAPI
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            log.LogInformation("FaceBlur function processed a request.");
+            
+            log.LogInformation(" ---- FACEBLUR REQUEST PROCESS START ----");
 
             object responseMessage = null;
             string url = req.Query["url"];
 
-            bool isValidUrl = Uri.IsWellFormedUriString(url, UriKind.Absolute);
-
-            if (isValidUrl)
+            try
             {
-                var urlImageBlurredSAS = await Helper.Main(log, url);
-                responseMessage = new ReturnUrls() { UrlOriginalImg = url, UrlBlurredSASImg = urlImageBlurredSAS.Item1, ResMsg = urlImageBlurredSAS.Item2};
+                bool isValidUrl = Uri.IsWellFormedUriString(url, UriKind.Absolute);
 
+                if (isValidUrl)
+                {
+                    var urlImageBlurredSAS = await Helper.Main(log, url);
+                    responseMessage = new ReturnUrls() { UrlOriginalImg = url, UrlBlurredSASImg = urlImageBlurredSAS.Item1, ResMsg = urlImageBlurredSAS.Item2 };
+
+                }
+                else
+                {
+                    responseMessage = "url parameter is null or not well formed https.";
+                }
             }
-            else 
+            catch (Exception e)
             {
-                responseMessage = "url parameter is null or not well formed https.";
+                responseMessage = "opsss ... something when wrong. See internal log for details";
+                log.LogError(e.Message);
+            }
+            finally { 
+                log.LogInformation(" ---- FACEBLUR REQUEST PROCESS END ----");
             }
 
             return new OkObjectResult(responseMessage);
