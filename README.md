@@ -5,7 +5,7 @@ Detects faces into pictures using the Azure Cognitive Services Face API and blur
 :-------------------------:|:-------------------------:
 ![](./docs/imgs/origin.png)  |  ![](./docs/imgs/blurred_img.jpg)
 
-The [test_imgs](./notebook/test_imgs/) folder contains some images downloaded from [unsplash](https://unsplash.com/) that can be use to quickly run the notebook. 
+The [test_imgs](./sample_images/) folder contains some images downloaded from [unsplash](https://unsplash.com/) that can be use to quickly run the notebook. 
 
 ## Step 1: Create the Azure Cognitive Service API
 Navigate to the [Azure Portal](portal.azure.com) and login in to your subscription. If you don't have one, you can create your **Azure free account** [here](https://azure.microsoft.com/en-us/free/). 
@@ -37,7 +37,7 @@ You can simply start the notebook locally or on **Azure Machine Learning Service
 
 **Few recommendations**:
 * You might need to download the packages imported in the first cell
-* You need to insert the *image url*. There are test images available [here](./notebook/test_imgs/)
+* You need to insert the *image url*. There are test images available [here](./sample_images/)
 
 ## TODOs:
 * Finish implementation of the notebook so that it takes and sends to the API a local image;
