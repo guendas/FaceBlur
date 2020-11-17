@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "SUBSCRIPTION_KEY": "<your Cognitive Service API Key>",
+    "ENDPOINT": "https://<your-endpoint>.cognitiveservices.azure.com",
+    "STORAGE_CONNECTIONSTRING": "DefaultEndpointsProtocol=https;AccountName=<your-storage-account>;AccountKey=<your-account-key>;EndpointSuffix=core.windows.net",
+    "CONTAINER_NAME_LOWER_CASE": "api",
+    "SAS_TOKEN_MINUTES_VALIDITY": "<time-in-minutes-for-a-valid-url>"
+  }
+}
