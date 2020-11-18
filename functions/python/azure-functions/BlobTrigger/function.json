@@ -1,0 +1,20 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "myblob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "connection": "blob_account_input",
+      "path": "input/{name}"
+    },
+    {
+      "name": "$return",
+      "type": "blob",
+      "direction": "out",
+      "connection": "blob_account_output",
+      "path": "output/{name}"
+    }
+
+  ]
+}

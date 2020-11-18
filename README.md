@@ -1,49 +1,55 @@
 # FaceBlur
+## Scenario
 Detects faces into pictures using the Azure Cognitive Services Face API and blurs them to anonymize the information.
 
 **Original Picture**             |  **Final Result**
 :-------------------------:|:-------------------------:
-![](./temp/test.png)  |  ![](./blurred_img/blurred_img.jpg)
+![](./docs/imgs/origin.png)  |  ![](./docs/imgs/blurred_img.jpg)
 
-The [test_imgs](./test_imgs/) folder contains some images downloaded from [unsplash](https://unsplash.com/) that can be use to quickly run the notebook. 
+## What's in this repo
 
-## Step 1: Create the Azure Cognitive Service API
+In this repository you'll find different ways and languages to deploy and solve the problem! 
+
+First of all, if you need some test images you can find them [here](./sample_images/). These images have been downloaded from [unsplash](https://unsplash.com/). 
+
+You can **deploy the solution** in two different ways:
+* Using a **Jupyter Notebook** and **Azure Machine Learning Service** (how-to [here](https://github.com/guendas/FaceBlur/blob/master/notebook/README.md))
+* Using **Azure Functions** (how-to [here](https://github.com/guendas/FaceBlur#functions)). In the [**functions**](https://github.com/guendas/FaceBlur/tree/master/functions) folder you can find the deployment both in *python* and *C#*, so choose the language you prefer!
+
+## Before you start
+You can run the solution locally, using *Visual Studio Code* and few extensions, *Visual Studio* or you can run it on *Azure*. Depending on which option you'll choose you need to set up the environment. 
+
+### Visual Studio Code
+Download **Visual Studio Code** from free [here](https://code.visualstudio.com/download) and install it on your device. 
+Once you have installed it, go to **Extensions** (*Ctrl+shift+X* if you want to use shortcuts) and install the following extensions:
+* [Azure Account](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account) 
+* [Azure Functions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
+* [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+* [Jupyter](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
+* [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+### Visual Studio
+*todo*
+### Azure subscription
 Navigate to the [Azure Portal](portal.azure.com) and login in to your subscription. If you don't have one, you can create your **Azure free account** [here](https://azure.microsoft.com/en-us/free/). 
 
-Once you have your Azure subscription, create a [**Face API resource**](https://portal.azure.com/#create/Microsoft.CognitiveServicesFace) in the Azure portal to get a **key** and **endpoint**. 
+## Let's try it!
+### Notebook
+To deploy and run the notebook follow the instruction you find [here](https://github.com/guendas/FaceBlur/blob/master/notebook/README.md)
+### Functions
+#### Architecture
 
-![Face API Service Creation](./readme_imgs/FaceAPIServiceCreation.png)
+![function architecture](./docs/imgs/FunctionsArchitecture.png) 
 
-Toggle the checkbox and click on **Review and Create** to proceed to the last step: click the **Create** button. When the resource has been deployed, click on **Go to resource** or navigate to the Resource Group where you deployed it. 
-
-## Step 2: Gather information on the service and fill up config file
-To make the notebook work correctly, you'll need to put some information into the [**config.json**](https://github.com/guendas/FaceBlur/blob/master/config.json) file. Open the file.
-
-On your resource on Azure left menu, navigate to the *Overview* tab. Copy-paste the values listed below as values in the config file:
-
-* Subscription id --> *subscription_id*
-* Resource group name --> *resource_group_name* ;
-* Face API Endpoint --> *face_api_endpoint*;
-* Location --> *face_api_location*.
-
-![Face API Overview](./readme_imgs/FaceAPIOverview.png)
-
-On the left side menu, navigate to *Keys and Endpoints* and click on the button on the right of the **Key 1** to copy and paste the key into your config.json as *face_api_key* value.
-
-![Face API Overview](./readme_imgs/FaceAPIKeys.png)
-
-## Step 3: Run your notebook
-You can simply start the notebook locally or on **Azure Machine Learning Service**.
-
-**Few recommendations**:
-* You might need to download the packages imported in the first cell
-* You need to insert the *image url*. There are test images available [here](./test_imgs/)
-
-## TODOs:
-* Finish implementation of the notebook so that it takes and sends to the API a local image;
-* Implement a complete Azure architecture using Azure Python Functions and Azure Storage account.
+#### Functions languages 
+You can deploy and run the function both in *C#* and *python*. Choose the language you prefer and follow the instruction:
+* [C# function](https://github.com/guendas/FaceBlur/blob/master/functions/C%23/FaceBlurAPI/README.md)
+* [python function](https://github.com/guendas/FaceBlur/blob/master/functions/python/azure-functions/BlobTrigger/readme.md)
 
 ## Resources
 * [**Face API**](https://azure.microsoft.com/en-us/services/cognitive-services/face/#get-started)
 * [**What is the Azure Face Service**](https://docs.microsoft.com/en-us/azure/cognitive-services/face/overview)
 * [**Detect faces in an image using Python**](https://docs.microsoft.com/en-us/azure/cognitive-services/face/quickstarts/python)
+* [**Azure Functions**](https://azure.microsoft.com/en-us/services/functions/)
+* [**Azure Functions docs**](https://docs.microsoft.com/en-us/azure/azure-functions/)
+* [**Azure Function with Python**](https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python)
+* [**Azure Functions - Blob trigger**](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-blob)
