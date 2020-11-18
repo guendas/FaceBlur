@@ -10,7 +10,7 @@ Detects faces into pictures using the Azure Cognitive Services Face API and blur
 
 In this repository you'll find different ways and languages to deploy and solve the problem! 
 
-First of all, if you need some test images you can find them [here](./sample_images/). The images have been downloaded from [unsplash](https://unsplash.com/). 
+First of all, if you need some test images you can find them [here](./sample_images/). These images have been downloaded from [unsplash](https://unsplash.com/). 
 
 You can **deploy the solution** in two different ways:
 * Using a **Jupyter Notebook** and **Azure Machine Learning Service** (how-to [here](https://github.com/guendas/FaceBlur/blob/master/notebook/README.md))
@@ -36,6 +36,11 @@ Navigate to the [Azure Portal](portal.azure.com) and login in to your subscripti
 ### Notebook
 To deploy and run the notebook follow the instruction you find [here](https://github.com/guendas/FaceBlur/blob/master/notebook/README.md)
 ### Functions
+#### Architecture
+
+![function architecture](./docs/imgs/FunctionsArchitecture.png) 
+
+#### Functions languages 
 You can deploy and run the function both in *C#* and *python*. Choose the language you prefer and follow the instruction:
 * [C# function](https://github.com/guendas/FaceBlur/blob/master/functions/C%23/FaceBlurAPI/README.md)
 * [python function](https://github.com/guendas/FaceBlur/blob/master/functions/python/azure-functions/BlobTrigger/readme.md)
