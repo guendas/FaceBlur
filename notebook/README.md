@@ -1,8 +1,9 @@
 # Notebook run instructions
 
-## Step 1: Create the Azure Cognitive Service API
+## Step 0: Azure Account
 Navigate to the [Azure Portal](portal.azure.com) and login in to your subscription. If you don't have one, you can create your **Azure free account** [here](https://azure.microsoft.com/en-us/free/). 
 
+## Step 1: Create the Azure Cognitive Service API
 Once you have your Azure subscription, create a [**Face API resource**](https://portal.azure.com/#create/Microsoft.CognitiveServicesFace) in the Azure portal to get a **key** and **endpoint**. 
 
 ![Face API Service Creation](../docs/imgs/FaceAPIServiceCreation.png)
