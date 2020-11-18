@@ -49,5 +49,7 @@ You can deploy and run the function both in *C#* and *python*. Choose the langua
 * [**Face API**](https://azure.microsoft.com/en-us/services/cognitive-services/face/#get-started)
 * [**What is the Azure Face Service**](https://docs.microsoft.com/en-us/azure/cognitive-services/face/overview)
 * [**Detect faces in an image using Python**](https://docs.microsoft.com/en-us/azure/cognitive-services/face/quickstarts/python)
+* [**Azure Functions**](https://azure.microsoft.com/en-us/services/functions/)
+* [**Azure Functions docs**](https://docs.microsoft.com/en-us/azure/azure-functions/)
 * [**Azure Function with Python**](https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python)
 * [**Azure Functions - Blob trigger**](https://docs.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-blob)
