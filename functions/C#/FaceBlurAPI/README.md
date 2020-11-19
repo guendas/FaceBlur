@@ -56,7 +56,9 @@ As from image above, on your first run you will get some error messages, because
 Go in the configuration section and add the 5 parameters as discussed above and press save
 ![Fun9](FaceBlurAPI/Docs/fun9.png)
 
+
 Now it should work as expected
+
 ![Fun10](FaceBlurAPI/Docs/fun10.png)
 
 Following the urlBlurredImage field you will be able to look at the resulting image until the SAS token appended to url is valid.
